@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors"; 
 import connectDB from "./configs/db.js";
 import adminRouter from "./routes/adminRoutes.js";
+import blogRouter from "./routes/blogRoutes.js";
 
 
 const app = express();  
@@ -17,7 +18,8 @@ dotenv.config();
 const port = process.env.PORT || 3001; 
 
 app.get("/", (req,res) => res.send("API working")); 
-app.use("/api/admin",adminRouter);
+app.use("/api/admin",adminRouter); 
+app.use("/api/blog",blogRouter);
 
 
 app.listen(port,() => {
