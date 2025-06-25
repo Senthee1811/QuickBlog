@@ -47,4 +47,48 @@ export const getAllComments = async(req,res) => {
     res.json({success:false,message:error.message});
     
   }
+} 
+
+export const getDashbaord = async(req,res) => {
+  try {
+    const recentBlogs = await Blog.find({}).sort({createdAt: -1}).limit(5); 
+    const blogs = await Blog.countDocuments(); 
+    const comment = await Comment.countDocuments(); 
+    const drafts = await Blog.countDocuments({isPublished:false}); 
+
+    const dashboardData = {
+      blogs,
+      comment,
+      drafts,
+      recentBlogs
+    } 
+    res.json({success:true,dashboardData});
+  } catch (error) {
+    res.json({success:false,message:error.message});
+    
+  }
+} 
+
+export const deleteComentById = async(req,res) => {
+  try {
+    const {id} = req.body; 
+    await Comment.findByIdAndDelete(id); 
+    res.json({message:"Comment deleted successfully",success:true})
+    
+  } catch (error) {
+    res.json({success:false,message:error.message});
+    
+  }
+} 
+
+export const approveByCommentById = async(req,res) => {
+  const {id} = req.body; 
+  await Comment.findByIdAndUpdate(id,{isApproved:true}); 
+  res.json({success:true,message:"Comment approved successfully"});
+  try {
+    
+  } catch (error) {
+    res.json({success:false,message:error.message});
+    
+  }
 }
